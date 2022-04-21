@@ -1,0 +1,52 @@
+version: "3"
+
+services:
+
+  openvpn-client-xray:
+  
+    image: pillarszhang/openvpn-client-xray
+
+    stdin_open: true
+    tty: true
+
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
+
+    volumes:
+      - type: bind
+        source: ./config
+        target: /root/config
+        read_only: true
+
+      - type: volume
+        source: compose_xray-asset
+        target: /usr/share/xray
+    
+    ports:
+      - 127.0.0.1:14850:14850
+      - 127.0.0.1:14851:14851
+      - 127.0.0.1:14852:14852
+    
+    # If you want to change the configuration file path or arguments for OpenVPN & Xray
+    # command: [
+    #   "start-openvpn-xray",
+    #   "--openvpn-config-file", "/root/config/openvpn.ovpn",
+    #   "--openvpn-args", "--script-security 2 --up /etc/openvpn/up.sh --down /etc/openvpn/down.sh --config /dev/stdin",
+    #   "--openvpn-args-append", "",
+    #   "--xray-config-file", "/root/config/xray.json",
+    #   "--xray-args", "--config /dev/stdin --format json",
+    #   "--xray-args-append", "",
+    #   # "--disable-replace"
+    # ]
+
+    # # If you want to update geo-data
+    # # docker compose run openvpn-client-xray update-geo-data --from-cdn
+    # command: [
+    #   "update-geo-data",
+    #   "--from-cdn"
+    # ]
+
+volumes:
+  compose_xray-asset:

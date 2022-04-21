@@ -1,0 +1,32 @@
+/*
+    Reference: https://xtls.github.io/config/
+*/
+
+{
+    "log": {
+        "loglevel": "warning"
+    },
+    "inbounds": [
+        {
+            // port forward（端口转发）
+            "tag": "port-forward-in",
+            "listen": "${DOCKER_IP}",
+            "port": 14850, // local port（本地端口）
+            "protocol": "dokodemo-door",
+            "settings": {
+                "address": "172.17.0.5", // remote IP（远程 IP）
+                "port": 22, // remote port（远程端口）
+                "network": "tcp,udp", // protocol（协议）
+                "timeout": 0,
+                "followRedirect": false,
+                "userLevel": 0
+            }
+        }
+    ],
+    "outbounds": [
+        {
+            "tag": "direct",
+            "protocol": "freedom"
+        }
+    ]
+}

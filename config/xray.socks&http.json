@@ -1,0 +1,35 @@
+/*
+    Reference: https://xtls.github.io/config/
+*/
+
+{
+    "log": {
+        "loglevel": "warning"
+    },
+    "inbounds": [
+        {
+            // socks（socks 代理）
+            "tag": "socks-in",
+            "listen": "${DOCKER_IP}",
+            "port": 14851, // local port（本地端口）
+            "protocol": "socks",
+            "settings": {
+                "udp": true,
+                "ip": "${DOCKER_IP}"
+            }
+        },
+        {
+            // http（http 代理）
+            "tag": "http-in",
+            "listen": "${DOCKER_IP}",
+            "port": 10852, // local port（本地端口）
+            "protocol": "http"
+        }
+    ],
+    "outbounds": [
+        {
+            "tag": "direct",
+            "protocol": "freedom"
+        }
+    ]
+}
